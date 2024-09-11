@@ -1,14 +1,31 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import requests
+import os
 from PIL import Image
 
-# Application Backend
-# Load medicine-dataframe from pickle in the form of dictionary
+
+# URLs of the .pkl files (replace these with actual links from Google Drive, Dropbox, etc.)
+SIMILARITY_PKL_URL = "https://drive.google.com/file/d/1Qpm7GlehsmrowQof9hEO7yT3yl8nakob/view?usp=sharing"
+# MEDICINE_DICT_PKL_URL = "https://drive.google.com/uc?id=YOUR_FILE_ID_FOR_MEDICINE_DICT"
+
+# Function to download .pkl files
+def download_file(url, file_path):
+    if not os.path.exists(file_path):
+        st.write(f"Downloading {file_path}...")
+        response = requests.get(url)
+        with open(file_path, 'wb') as file:
+            file.write(response.content)
+        st.write(f"{file_path} downloaded successfully!")
+
+# Ensure files are available locally
+download_file(SIMILARITY_PKL_URL, "similarity.pkl")
+# download_file(MEDICINE_DICT_PKL_URL, "medicine_dict.pkl")
+
+# Load the .pkl files after ensuring they are downloaded
 medicines_dict = pickle.load(open('medicine_dict.pkl', 'rb'))
 medicines = pd.DataFrame(medicines_dict)
-
-# Load similarity-vector-data from pickle in the form of dictionary
 similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 def recommend(medicine):
