@@ -1,4 +1,4 @@
-# Drug Recommendation System
+# 💊 Drug Recommendation System 
 
 Welcome to the **Drug Recommendation System**! This project aims to provide an intelligent solution for recommending similar drugs based on user input. It utilizes Natural Language Processing (NLP) and machine learning to offer efficient and accurate drug recommendations.
 
@@ -29,16 +29,20 @@ This application leverages TF-IDF Vectorization and cosine similarity to analyze
    ```
    
 2. **Create a Virtual Environment**
-   ```python -m venv venv
+   
+   ```bash
+   python -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
    
-3. **Install Dependencies***
-   ```pip install -r requirements.txt
+4. **bashInstall Dependencies***
+   ```bash
+   pip install -r requirements.txt
    ```
    
-4. **Run the Application**
-   ```streamlit run app.py
+5. **Run the Application**
+   ```bash
+   streamlit run app.py
    ```
 
 ## 💻 How It Works
