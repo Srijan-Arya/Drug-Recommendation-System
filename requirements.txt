@@ -1,0 +1,5 @@
+joblib
+pandas
+streamlit
+requests
+Pillow
