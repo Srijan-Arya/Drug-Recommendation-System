@@ -1,35 +1,28 @@
-import streamlit as st
-import pickle
-import pandas as pd
-import requests
+import gdown
 import os
-from PIL import Image
+import joblib
+import pandas as pd
+import streamlit as st
+
+# Local file names
+SIMILARITY_FILE = "similarity_compressed.joblib"
+MEDICINE_DICT_FILE = "medicine_dict_compressed.joblib"
 
 
-# URLs of the .pkl files (replace these with actual links from Google Drive, Dropbox, etc.)
-SIMILARITY_PKL_URL = "https://drive.google.com/file/d/1Qpm7GlehsmrowQof9hEO7yT3yl8nakob/view?usp=sharing"
-# MEDICINE_DICT_PKL_URL = "https://drive.google.com/uc?id=YOUR_FILE_ID_FOR_MEDICINE_DICT"
+# Load the compressed similarity matrix and medicine_dict
+similarity = joblib.load(SIMILARITY_FILE)
+medicine_dict = joblib.load(MEDICINE_DICT_FILE)
 
-# Function to download .pkl files
-def download_file(url, file_path):
-    if not os.path.exists(file_path):
-        st.write(f"Downloading {file_path}...")
-        response = requests.get(url)
-        with open(file_path, 'wb') as file:
-            file.write(response.content)
-        st.write(f"{file_path} downloaded successfully!")
+# Convert the dictionary back to a DataFrame
+medicines = pd.DataFrame(medicine_dict)
 
-# Ensure files are available locally
-download_file(SIMILARITY_PKL_URL, "similarity.pkl")
-# download_file(MEDICINE_DICT_PKL_URL, "medicine_dict.pkl")
-
-# Load the .pkl files after ensuring they are downloaded
-medicines_dict = pickle.load(open('medicine_dict.pkl', 'rb'))
-medicines = pd.DataFrame(medicines_dict)
-similarity = pickle.load(open('similarity.pkl', 'rb'))
-
+# Recommendation function
 def recommend(medicine):
-    medicine_index = medicines[medicines['Drug_Name'] == medicine].index[0]
+    try:
+        medicine_index = medicines[medicines['Drug_Name'] == medicine].index[0]
+    except IndexError:
+        return ["Medicine not found in the dataset."]
+    
     distances = similarity[medicine_index]
     medicines_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
 
@@ -42,7 +35,8 @@ def recommend(medicine):
 st.markdown("<h1 style='text-align: center; color: #007bff;'>Drug Recommendation System</h1>", unsafe_allow_html=True)
 
 # Image (center the image and set custom width)
-image = Image.open('images/medss.png')
+from PIL import Image
+image = Image.open('images/medss.png')  # Make sure to have this image in the correct path
 
 # Create empty columns to center the image
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -100,4 +94,4 @@ if recommend_btn:
 
 # Footer for credits or additional information
 st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #7f8c8d;'>Made by <span style='color: orange'>Srijan Arya </span> | <a href='https://github.com/' style='text-decoration:none'>Github</a> © 2024</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #7f8c8d;'>Made by <span style='color: orange'>Srijan Arya</span> | <a href='https://github.com/Srijan-Arya/Drug-Recommendation-System' style='text-decoration:none'>Github</a> © 2024</p>", unsafe_allow_html=True)
