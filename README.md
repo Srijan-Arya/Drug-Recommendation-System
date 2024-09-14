@@ -2,6 +2,9 @@
 
 Welcome to the **Drug Recommendation System**! This project aims to provide an intelligent solution for recommending similar drugs based on user input. It utilizes Natural Language Processing (NLP) and machine learning to offer efficient and accurate drug recommendations.
 
+![image](https://github.com/user-attachments/assets/65c92b39-fc72-4500-ad39-3f7e38f3b269)
+
+
 ## 🛠️ Project Overview
 
 This application leverages TF-IDF Vectorization and cosine similarity to analyze drug names and recommend similar options. Built using Python and Streamlit, it offers an interactive and user-friendly interface for drug recommendations.
